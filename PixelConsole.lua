@@ -5,10 +5,6 @@ local IO = {}
 local PixelConsole = {}
 PixelConsole.__index = PixelConsole
 
-PixelConsole.io = function()
-    return IO
-end
-
 local HttpService = game:GetService("HttpService")
 
 local ansi = {}
@@ -25,6 +21,40 @@ end
 
 ansi.color.warn = "\027[33mwarn:\27[0m "
 ansi.color.error = "\027[31merror:\27[0m "
+
+IO.In = {}
+IO.In.Callbacks = {}
+IO.argsSet = {}
+
+PixelConsole.io = function()
+    coroutine.resume(coroutine.create(function()
+        rconsoleprint("> ")
+        local rIn = rconsoleinput()
+        ansi.clearPrevious()
+        for _, v in ipairs(IO.In.Callbacks) do
+            v(tostring(rIn))
+        end
+    end))
+    
+    return IO
+end
+
+function IO.In(callback)
+    if not type(callback) == "function" then
+        error(("IO In callback isn't a func (%s)"):format(type(callback)))
+    end
+    table.insert(IO.In.Callbacks, callback)
+end
+
+function IO.Out(...)
+    local stringStructure = ""
+    local outputs = {...}
+    for _, v in ipairs(outputs) do
+        stringStructure = stringStructure .. tostring(v) .. " "
+    end
+    rconsoleprint(stringStructure .. "\n")
+end
+
 
 PixelConsole.redirect = function()
     _G.pixelConsoleTypeChosen = true

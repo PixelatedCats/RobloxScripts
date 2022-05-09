@@ -1,4 +1,4 @@
-_G.pixelConsoleTypeChosen = false
+if _G.pixelConsoleTypeChosen then return end
 
 local IO = {}
 
@@ -27,7 +27,6 @@ ansi.color.warn = "\027[33mwarn:\27[0m "
 ansi.color.error = "\027[31merror:\27[0m "
 
 PixelConsole.redirect = function()
-    if _G.pixelConsoleTypeChosen then return end
     _G.pixelConsoleTypeChosen = true
     
     local defaultOptions = {

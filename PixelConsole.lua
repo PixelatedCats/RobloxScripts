@@ -1,4 +1,4 @@
-if _G.pixelConsoleTypeChosen then return end
+_G.pixelConsoleTypeChosen = false
 
 local IO = {}
 
@@ -27,6 +27,7 @@ ansi.color.warn = "\027[33mwarn:\27[0m "
 ansi.color.error = "\027[31merror:\27[0m "
 
 PixelConsole.redirect = function()
+    if _G.pixelConsoleTypeChosen then return end
     _G.pixelConsoleTypeChosen = true
     
     local defaultOptions = {
@@ -229,6 +230,7 @@ PixelConsole.redirect = function()
             table.remove(cmdInput, 1)
             if not cmds[signalCmd] then ansi.clearPrevious(rInput) continue end
             ansi.clearPrevious(rInput)
+            rconsoleprint("> ")
             cmds[signalCmd](cmdInput)
             task.wait()
         end

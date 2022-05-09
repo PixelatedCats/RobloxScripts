@@ -260,8 +260,8 @@ PixelConsole.redirect = function()
             local cmdInput = rInput:split(" ")
             local signalCmd = cmdInput[1]
             table.remove(cmdInput, 1)
-            if not cmds[signalCmd] then ansi.clearPrevious(rInput) rconsoleprint("> ") continue end
-            ansi.clearPrevious(rInput)
+            if not cmds[signalCmd] then ansi.clearPrevious("> " .. rInput) rconsoleprint("> ") continue end
+            ansi.clearPrevious("> " .. rInput)
             cmds[signalCmd](cmdInput)
             task.wait()
         end

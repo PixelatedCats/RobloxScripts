@@ -31,10 +31,10 @@ PixelConsole.io = function()
     coroutine.resume(coroutine.create(function()
         rconsoleprint("> ")
         local rIn = rconsoleinput()
-        ansi.clearPrevious("> " .. tostring(rIN))
-        rconsoleprint(tostring(rIN))
+        ansi.clearPrevious("> " .. rIn)
+        rconsoleprint(rIn)
         for _, v in ipairs(IO.Callbacks) do
-            v(tostring(rIn))
+            v(rIn)
         end
     end))
     

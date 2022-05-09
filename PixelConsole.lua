@@ -32,6 +32,7 @@ PixelConsole.io = function()
         rconsoleprint("> ")
         local rIn = rconsoleinput()
         ansi.clearPrevious("> " .. tostring(rIN))
+        rconsoleprint(tostring(rIN))
         for _, v in ipairs(IO.Callbacks) do
             v(tostring(rIn))
         end

@@ -1,6 +1,8 @@
-if _G.pixelConsoleTypeChosen then return setmetatable({}, {
+-- oh my god this code is awful for me to look at and try to maintain D:
+
+if _G.pixelConsoleTypeChosen then return setmetatable({}, { -- (internal screaming and suffering)
     __index = function()
-        return
+        return function() end
     end
     })
 end
@@ -61,7 +63,11 @@ function IO.Out(...)
     for _, v in ipairs(outputs) do
         stringStructure = stringStructure .. tostring(v) .. " "
     end
+    ansi.up()
+    rconsoleprint(string.rep(" ", 99999999))
+    ansi.left(9999999999)
     rconsoleprint(stringStructure .. "\n")
+    rconsoleprint("> ")
 end
 
 

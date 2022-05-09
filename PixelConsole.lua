@@ -1,4 +1,9 @@
-if _G.pixelConsoleTypeChosen then return end
+if _G.pixelConsoleTypeChosen then return setmetatable({}, {
+    __index = function()
+        return
+    end
+    })
+end
 
 local IO = {}
 
@@ -257,15 +262,13 @@ PixelConsole.redirect = function()
 
     coroutine.resume(coroutine.create(function()
         while true do
-            rconsoleprint("> ")
             local rInput = rconsoleinput()
             local cmdInput = rInput:split(" ")
             local signalCmd = cmdInput[1]
             table.remove(cmdInput, 1)
-            if not cmds[signalCmd] then ansi.clearPrevious("> " .. rInput) rconsoleprint("> ") continue end
-            ansi.clearPrevious("> " .. rInput)
+            if not cmds[signalCmd] then ansi.clearPrevious(rInput) continue end
+            ansi.clearPrevious(rInput)
             cmds[signalCmd](cmdInput)
-            task.wait()
         end
     end))
 

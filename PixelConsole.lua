@@ -27,6 +27,8 @@ IO.In.Callbacks = {}
 IO.argsSet = {}
 
 PixelConsole.io = function()
+    if _G.pixelConsoleTypeChosen then return end
+    _G.pixelConsoleTypeChosen = true
     coroutine.resume(coroutine.create(function()
         rconsoleprint("> ")
         local rIn = rconsoleinput()

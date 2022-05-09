@@ -29,12 +29,14 @@ PixelConsole.io = function()
     if _G.pixelConsoleTypeChosen then return end
     _G.pixelConsoleTypeChosen = true
     coroutine.resume(coroutine.create(function()
-        rconsoleprint("> ")
-        local rIn = rconsoleinput()
-        ansi.clearPrevious("> " .. rIn)
-        rconsoleprint(rIn)
-        for _, v in ipairs(IO.Callbacks) do
-            v(rIn)
+        while true do
+            rconsoleprint("> ")
+            local rIn = rconsoleinput()
+            ansi.clearPrevious("> " .. rIn)
+            rconsoleprint(rIn .. " \n")
+            for _, v in ipairs(IO.Callbacks) do
+                v(rIn)
+            end
         end
     end))
     

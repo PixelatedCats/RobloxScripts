@@ -32,7 +32,7 @@ PixelConsole.io = function()
     coroutine.resume(coroutine.create(function()
         rconsoleprint("> ")
         local rIn = rconsoleinput()
-        ansi.clearPrevious(tostring(rIN))
+        ansi.clearPrevious("> " .. tostring(rIN))
         for _, v in ipairs(IO.In.Callbacks) do
             v(tostring(rIn))
         end
@@ -45,7 +45,7 @@ function IO.In(callback)
     if not type(callback) == "function" then
         error(("IO In callback isn't a func (%s)"):format(type(callback)))
     end
-    table.insert(IO.In.Callbacks, callback)
+    IO.In.Callbacks[#IO.In.Callbacks + 1] = callback
 end
 
 function IO.Out(...)

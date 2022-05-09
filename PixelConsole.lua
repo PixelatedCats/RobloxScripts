@@ -22,8 +22,7 @@ end
 ansi.color.warn = "\027[33mwarn:\27[0m "
 ansi.color.error = "\027[31merror:\27[0m "
 
-IO.In = {}
-IO.In.Callbacks = {}
+IO.Callbacks = {}
 IO.argsSet = {}
 
 PixelConsole.io = function()
@@ -33,7 +32,7 @@ PixelConsole.io = function()
         rconsoleprint("> ")
         local rIn = rconsoleinput()
         ansi.clearPrevious("> " .. tostring(rIN))
-        for _, v in ipairs(IO.In.Callbacks) do
+        for _, v in ipairs(IO.Callbacks) do
             v(tostring(rIn))
         end
     end))
@@ -45,7 +44,7 @@ function IO.In(callback)
     if not type(callback) == "function" then
         error(("IO In callback isn't a func (%s)"):format(type(callback)))
     end
-    IO.In.Callbacks[#IO.In.Callbacks + 1] = callback
+    table.insert(IO.Callbacks, callback)
 end
 
 function IO.Out(...)

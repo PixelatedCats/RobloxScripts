@@ -66,7 +66,7 @@ function IO.Out(...)
         stringStructure = stringStructure .. tostring(v) .. " "
     end
     ansi.left(3)
-    rconsoleprint("\027[K")
+    ansi.clearLine()
     rconsoleprint(stringStructure .. "\n")
     rconsoleprint("> ")
 end

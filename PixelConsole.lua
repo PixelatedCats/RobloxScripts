@@ -34,14 +34,19 @@ ansi.color.error = "\027[31merror:\27[0m "
 IO.Callbacks = {}
 IO.argsSet = {}
 
+local ioInputState = false -- false (no input yet) / true (input)
+
 PixelConsole.io = function()
-    if _G.pixelConsoleTypeChosen then return end
+    if _G.pixelConsoleTypeChosen then return IO end
     _G.pixelConsoleTypeChosen = true
     coroutine.resume(coroutine.create(function()
         while true do
             rconsoleprint("> ")
+            ioInputState = false
             local rIn = rconsoleinput()
+            ioInputState = true
             ansi.clearPrevious()
+            if rIn:match("^%s*$") or rIn:match("^%s") then continue end
             rconsoleprint(rIn .. " \n")
             for _, v in ipairs(IO.Callbacks) do
                 v(rIn)
@@ -65,9 +70,14 @@ function IO.Out(...)
     for _, v in ipairs(outputs) do
         stringStructure = stringStructure .. tostring(v) .. " "
     end
-    --ansi.left(3)
-    --ansi.clearLine()
-    rconsoleprint(stringStructure .. "\n")
+    if not ioInputState then
+        ansi.left(3)
+        ansi.clearLine()
+        rconsoleprint(stringStructure .. "\n")
+        rconsoleprint("> ")
+    else
+        rconsoleprint(stringStructure .. "\n")
+    end
 end
 
 

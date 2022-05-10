@@ -65,10 +65,9 @@ function IO.Out(...)
     for _, v in ipairs(outputs) do
         stringStructure = stringStructure .. tostring(v) .. " "
     end
-    ansi.left(3)
-    ansi.clearLine()
+    --ansi.left(3)
+    --ansi.clearLine()
     rconsoleprint(stringStructure .. "\n")
-    rconsoleprint("> ")
 end
 
 

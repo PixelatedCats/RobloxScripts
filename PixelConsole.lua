@@ -1,11 +1,13 @@
--- oh my god this code is awful for me to look at and try to maintain D:
+--[[
 
-if _G.pixelConsoleTypeChosen then return setmetatable({}, { -- (internal screaming and suffering)
-    __index = function()
-        return function() end
-    end
-    })
-end
+Pixel Console, just a lazy way for me to handle console io quicker
+
+(oh yeah there's a redirect console, that's basically roblox's console but external)
+
+]]
+
+
+-- oh my god this code is awful for me to look at and try to maintain D:
 
 local IO = {}
 
@@ -20,10 +22,10 @@ ansi.color = {}
 ansi.up = function(a) rconsoleprint("\027[" .. ((a and tostring(a)) or "1") .. "A") end
 ansi.down = function(a) rconsoleprint("\027[" .. ((a and tostring(a)) or "1") .. "B") end
 ansi.left = function(a) rconsoleprint("\027[" .. ((a and tostring(a)) or "1") .. "D") end
-ansi.clearPrevious = function(ri) 
+ansi.clearLine = function() rconsoleprint("\027[K") end
+ansi.clearPrevious = function() 
     ansi.up()
-    rconsoleprint(string.rep(" ", ri:len()))
-    ansi.left(ri:len())
+    ansi.clearLine()
 end
 
 ansi.color.warn = "\027[33mwarn:\27[0m "
@@ -39,7 +41,7 @@ PixelConsole.io = function()
         while true do
             rconsoleprint("> ")
             local rIn = rconsoleinput()
-            ansi.clearPrevious("> " .. rIn)
+            ansi.clearPrevious()
             rconsoleprint(rIn .. " \n")
             for _, v in ipairs(IO.Callbacks) do
                 v(rIn)
@@ -63,15 +65,14 @@ function IO.Out(...)
     for _, v in ipairs(outputs) do
         stringStructure = stringStructure .. tostring(v) .. " "
     end
-    ansi.up()
-    rconsoleprint(string.rep(" ", 99999999))
-    ansi.left(9999999999)
+    ansi.clearPrevious()
     rconsoleprint(stringStructure .. "\n")
     rconsoleprint("> ")
 end
 
 
 PixelConsole.redirect = function()
+    if _G.pixelConsoleTypeChosen then return end
     _G.pixelConsoleTypeChosen = true
     
     local defaultOptions = {
@@ -272,8 +273,8 @@ PixelConsole.redirect = function()
             local cmdInput = rInput:split(" ")
             local signalCmd = cmdInput[1]
             table.remove(cmdInput, 1)
-            if not cmds[signalCmd] then ansi.clearPrevious(rInput) continue end
-            ansi.clearPrevious(rInput)
+            if not cmds[signalCmd] then ansi.clearPrevious() continue end
+            ansi.clearPrevious()
             cmds[signalCmd](cmdInput)
         end
     end))
